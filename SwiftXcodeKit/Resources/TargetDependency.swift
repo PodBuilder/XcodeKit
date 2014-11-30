@@ -53,7 +53,7 @@ public class ContainerItemProxy: Resource {
     }
     
     // This is the OID of the project reference containing the target that this item proxy points to.
-    // It isn't resolved into an XCFileReference or XCProject instance because it could be either.
+    // It isn't resolved into a FileReference or Project instance because it could be either.
     public var projectIdentifier: OID? {
         get {
             if let idObject: AnyObject = properties["containerPortal"] {
@@ -76,8 +76,8 @@ public class ContainerItemProxy: Resource {
         }
     }
     
-    // The XCObjectIdentifier of the target this item proxy points to. This isn't resolved into an
-    // XCTarget instance because the identifier may belong to another registry (different than the one
+    // The OID of the target this item proxy points to. This isn't resolved into an instance of
+    // Target because the identifier may belong to another registry (different than the one
     /// that owns the receiver).
     public var targetIdentifier: OID? {
         get {
