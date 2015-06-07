@@ -36,7 +36,7 @@ internal func repeatString(base: String, #times: Int) -> String {
     let cacheKey = "\(times)*\(base)"
     let cacheValue: AnyObject? = repeatedStringCache.objectForKey(cacheKey)
     if let realValue: AnyObject = cacheValue {
-        return realValue as String
+        return realValue as! String
     }
     
     var repeated = ""
@@ -60,7 +60,7 @@ internal extension String {
             modified.replaceOccurrencesOfString("\n", withString: "\\n", options: options, range: NSMakeRange(0, modified.length))
             modified.replaceOccurrencesOfString("\t", withString: "\\t", options: options, range: NSMakeRange(0, modified.length))
             
-            return modified
+            return modified as String
         }
     }
     

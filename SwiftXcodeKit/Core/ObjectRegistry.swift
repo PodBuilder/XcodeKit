@@ -72,7 +72,7 @@ public class ObjectRegistry: Equatable {
     public var project: Project {
         get {
             let idString: AnyObject? = projectPropertyList["rootObject"]
-            let id = OID(key: idString as String, targetDescription: "Project object")
+            let id = OID(key: idString as! String, targetDescription: "Project object")
             return findObject(identifier: id)!
         }
         
@@ -85,7 +85,7 @@ public class ObjectRegistry: Equatable {
     public var objectDictionary: [String: AnyObject] {
         get {
             let value: AnyObject? = projectPropertyList["objects"]
-            return value as [String: AnyObject]
+            return value as! [String: AnyObject]
         }
         
         set {

@@ -123,7 +123,7 @@ public class FileReference: Resource {
     public var name: String {
         get {
             let value: AnyObject? = properties["name"]
-            return value! as String
+            return value! as! String
         }
         
         set {
@@ -135,7 +135,7 @@ public class FileReference: Resource {
     public var path: String {
         get {
             let value: AnyObject? = properties["path"]
-            return value! as String
+            return value! as! String
         }
         
         set {
@@ -147,7 +147,7 @@ public class FileReference: Resource {
     public var resolveBase: PathResolveBase {
         get {
             let value: AnyObject? = properties["sourceTree"]
-            return PathResolveBase.parsePBXString(value! as String)
+            return PathResolveBase.parsePBXString(value! as! String)
         }
         
         set {

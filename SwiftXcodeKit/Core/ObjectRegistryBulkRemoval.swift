@@ -30,12 +30,12 @@ import Foundation
 private func addObjectIdentifiersInDictionary(dict: [String: AnyObject], inout toArray identifiers: [String]) {
     for object in dict.values {
         if object is OID {
-            let id = object as OID
+            let id = object as! OID
             identifiers.append(id.key)
         } else if object is [String: AnyObject] {
-            addObjectIdentifiersInDictionary(object as [String: AnyObject], toArray: &identifiers)
+            addObjectIdentifiersInDictionary(object as! [String: AnyObject], toArray: &identifiers)
         } else if object is [AnyObject] {
-            addObjectIdentifiersInArray(object as [AnyObject], toArray: &identifiers)
+            addObjectIdentifiersInArray(object as! [AnyObject], toArray: &identifiers)
         }
     }
 }
@@ -43,12 +43,12 @@ private func addObjectIdentifiersInDictionary(dict: [String: AnyObject], inout t
 private func addObjectIdentifiersInArray(array: [AnyObject], inout toArray identifiers: [String]) {
     for object in array {
         if object is OID {
-            let id = object as OID
+            let id = object as! OID
             identifiers.append(id.key)
         } else if object is [String: AnyObject] {
-            addObjectIdentifiersInDictionary(object as [String: AnyObject], toArray: &identifiers)
+            addObjectIdentifiersInDictionary(object as! [String: AnyObject], toArray: &identifiers)
         } else if object is [AnyObject] {
-            addObjectIdentifiersInArray(object as [AnyObject], toArray: &identifiers)
+            addObjectIdentifiersInArray(object as! [AnyObject], toArray: &identifiers)
         }
     }
 }

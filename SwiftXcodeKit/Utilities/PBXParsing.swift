@@ -33,7 +33,7 @@ private func scanPBXProjectString(scanner: NSScanner) -> (String?, NSError?) {
     if scanner.peekString("\"") {
         if !scanner.scanString("\"", intoString: nil) {
             let userInfo = [ "location": scanner.scanLocation, "operation": "Eat opening quoted-string delimiter" ]
-            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
             return (nil, error)
         }
         
@@ -43,19 +43,19 @@ private func scanPBXProjectString(scanner: NSScanner) -> (String?, NSError?) {
             var possiblePart: NSString?
             scanner.scanUpToString("\"", intoString: &possiblePart)
             if let part = possiblePart {
-                value += part
+                value += part as String
                 
                 if part.hasSuffix("\\") && scanner.peekString("\"") {
                     var possibleQuote: NSString?
                     scanner.scanString("\"", intoString: &possibleQuote)
                     
                     if let quote = possibleQuote {
-                        value += quote
+                        value += quote as String
                     }
                 } else {
                     if !scanner.scanString("\"", intoString: nil) {
                         let userInfo = [ "location": scanner.scanLocation, "operation": "Eat closing quoted-string delimiter" ]
-                        let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                        let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                         return (nil, error)
                     }
                     
@@ -70,12 +70,12 @@ private func scanPBXProjectString(scanner: NSScanner) -> (String?, NSError?) {
         let charset = NSCharacterSet(charactersInString: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._/")
         if !scanner.scanCharactersFromSet(charset, intoString: &retval) {
             let userInfo = [ "location": scanner.scanLocation, "operation": "Scan unquoted string" ]
-            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
             return (nil, error)
         }
         
         if let realString = retval {
-            return (realString, nil)
+            return (realString as String, nil)
         }
         
         let error = NSError(domain: ErrorDomain, code: Errors.unspecifiedInternalError, userInfo: nil)
@@ -90,7 +90,7 @@ private func scanPBXProjectDictionary(scanner: NSScanner) -> ([String: AnyObject
     scanner.scanCharactersFromSet(wspace, intoString: nil)
     if !scanner.scanString("{", intoString: nil) {
         let userInfo = [ "location": scanner.scanLocation, "operation": "Eat opening brace for dictionary" ]
-        let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+        let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
         return (nil, error)
     }
     scanner.scanCharactersFromSet(wspace, intoString: nil)
@@ -101,19 +101,19 @@ private func scanPBXProjectDictionary(scanner: NSScanner) -> ([String: AnyObject
         while scanner.peekString("/*") {
             if !scanner.scanString("/*", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Eat opening delimiter for ignored comment in dictionary" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
             if !scanner.scanUpToString("*/", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Find closing delimiter for ignored comment in dictionary" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
             if !scanner.scanString("*/", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Eat closing delimiter for ignored comment in dictionary" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
@@ -139,7 +139,7 @@ private func scanPBXProjectDictionary(scanner: NSScanner) -> ([String: AnyObject
         if scanner.peekString("/*") {
             if !scanner.scanString("/*", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Eat opening comment delimiter for annotated dictionary key" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
@@ -153,7 +153,7 @@ private func scanPBXProjectDictionary(scanner: NSScanner) -> ([String: AnyObject
             scanner.scanCharactersFromSet(wspace, intoString: nil)
             if !scanner.scanString("*/", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Eat closing comment delimiter for annotated dictionary key" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             scanner.scanCharactersFromSet(wspace, intoString: nil)
@@ -162,7 +162,7 @@ private func scanPBXProjectDictionary(scanner: NSScanner) -> ([String: AnyObject
         scanner.scanCharactersFromSet(wspace, intoString: nil)
         if !scanner.scanString("=", intoString: nil) {
             let userInfo = [ "location": scanner.scanLocation, "operation": "Eat equals sign in dictionary" ]
-            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
             return (nil, error)
         }
         scanner.scanCharactersFromSet(wspace, intoString: nil)
@@ -188,7 +188,7 @@ private func scanPBXProjectDictionary(scanner: NSScanner) -> ([String: AnyObject
         scanner.scanCharactersFromSet(wspace, intoString: nil)
         if !scanner.scanString(";", intoString: nil) {
             let userInfo = [ "location": scanner.scanLocation, "operation": "Eat semicolon following dictionary key/value pair" ]
-            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
             return (nil, error)
         }
         scanner.scanCharactersFromSet(wspace, intoString: nil)
@@ -196,19 +196,19 @@ private func scanPBXProjectDictionary(scanner: NSScanner) -> ([String: AnyObject
         while scanner.peekString("/*") {
             if !scanner.scanString("/*", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Eat opening comment delimiter for ignored comment in dictionary" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
             if !scanner.scanUpToString("*/", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Find closing comment delimiter for ignored comment in dictionary" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
             if !scanner.scanString("*/", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Eat closing comment delimiter for ignored comment in dictionary" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
@@ -221,7 +221,7 @@ private func scanPBXProjectDictionary(scanner: NSScanner) -> ([String: AnyObject
     scanner.scanCharactersFromSet(wspace, intoString: nil)
     if !scanner.scanString("}", intoString: nil) {
         let userInfo = [ "location": scanner.scanLocation, "operation": "Eat closing brace for dictionary" ]
-        let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+        let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
         return (nil, error)
     }
     
@@ -234,7 +234,7 @@ private func scanPBXProjectArray(scanner: NSScanner) -> ([AnyObject]?, NSError?)
     scanner.scanCharactersFromSet(wspace, intoString: nil)
     if !scanner.scanString("(", intoString: nil) {
         let userInfo = [ "location": scanner.scanLocation, "operation": "Eat opening parenthesis for array" ]
-        let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+        let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
         return (nil, error)
     }
     scanner.scanCharactersFromSet(wspace, intoString: nil)
@@ -243,19 +243,19 @@ private func scanPBXProjectArray(scanner: NSScanner) -> ([AnyObject]?, NSError?)
         while scanner.peekString("/*") {
             if !scanner.scanString("/*", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Eat opening delimiter for ignored comment in array" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
             if !scanner.scanUpToString("*/", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Find closing delimiter for ignored comment in array" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
             if !scanner.scanString("*/", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Eat closing delimiter for ignored comment in array" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
@@ -300,19 +300,19 @@ private func scanPBXProjectArray(scanner: NSScanner) -> ([AnyObject]?, NSError?)
         while scanner.peekString("/*") {
             if !scanner.scanString("/*", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Eat opening delimiter for ignored comment in array" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
             if !scanner.scanUpToString("*/", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Find closing delimiter for ignored comment in array" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
             if !scanner.scanString("*/", intoString: nil) {
                 let userInfo = [ "location": scanner.scanLocation, "operation": "Eat closing delimiter for ignored comment in array" ]
-                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+                let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
                 return (nil, error)
             }
             
@@ -325,7 +325,7 @@ private func scanPBXProjectArray(scanner: NSScanner) -> ([AnyObject]?, NSError?)
     scanner.scanCharactersFromSet(wspace, intoString: nil)
     if !scanner.scanString(")", intoString: nil) {
         let userInfo = [ "location": scanner.scanLocation, "operation": "Eat closing parenthesis for array" ]
-        let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+        let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
         return (nil, error)
     }
     
@@ -347,7 +347,7 @@ private func scanPBXProjectObjectIdentifier(scanner: NSScanner) -> (OID?, NSErro
     if scanner.peekString("/*") {
         if !scanner.scanString("/*", intoString: nil) {
             let userInfo = [ "location": scanner.scanLocation, "operation": "Eat opening comment delimiter for object identifier" ]
-            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
             return (nil, error)
         }
         
@@ -356,7 +356,7 @@ private func scanPBXProjectObjectIdentifier(scanner: NSScanner) -> (OID?, NSErro
         var scannedComment: NSString? = nil
         if !scanner.scanUpToString("*/", intoString: &scannedComment) {
             let userInfo = [ "location": scanner.scanLocation, "operation": "Scan object identifier description" ]
-            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
             return (nil, error)
         }
         
@@ -367,7 +367,7 @@ private func scanPBXProjectObjectIdentifier(scanner: NSScanner) -> (OID?, NSErro
         scanner.scanCharactersFromSet(wspace, intoString: nil)
         if !scanner.scanString("*/", intoString: nil) {
             let userInfo = [ "location": scanner.scanLocation, "operation": "Eat closign comment delimiter for object identifier" ]
-            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
             return (nil, error)
         }
     }
@@ -411,13 +411,13 @@ internal func parsePBXProjectSource(text: String) -> ([String: AnyObject]?, NSEr
         
         if !scanner.scanUpToCharactersFromSet(newlines, intoString: nil) {
             let userInfo = [ "location": scanner.scanLocation, "operation": "Eat opening comment" ]
-            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
             return (nil, error)
         }
         
         if !scanner.scanCharactersFromSet(newlines, intoString: nil) {
             let userInfo = [ "location": scanner.scanLocation, "operation": "Eat opening comment trailing newline" ]
-            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo)
+            let error = NSError(domain: ErrorDomain, code: Errors.syntaxErrorInPBXProject, userInfo: userInfo as [NSObject : AnyObject])
             return (nil, error)
         }
     }

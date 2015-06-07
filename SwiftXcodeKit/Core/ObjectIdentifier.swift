@@ -50,7 +50,7 @@ private func generateOIDKey() -> String {
 // Note: This must be a class because it must be able to be an NSDictionary value.
 public final class OID: Equatable, Printable {
     public class func isValidObjectIdentifierKey(str: String) -> Bool {
-        return objectKeyRegex.numberOfMatchesInString(str, options: NSMatchingOptions(UInt(0)), range: NSMakeRange(0, countElements(str))) != 0
+        return objectKeyRegex.numberOfMatchesInString(str, options: NSMatchingOptions(UInt(0)), range: NSMakeRange(0, count(str))) != 0
     }
     
     public convenience init() {

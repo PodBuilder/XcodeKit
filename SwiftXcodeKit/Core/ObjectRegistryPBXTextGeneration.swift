@@ -32,7 +32,7 @@ private func escapePBXProjectString(base: String) -> String {
     var needsQuoting = false
     
     let bridgedBase: NSString = base
-    let length = countElements(base)
+    let length = count(base)
     for i in 0..<length {
         let char: unichar = bridgedBase.characterAtIndex(i)
         if !safeCharacterSet.characterIsMember(char) {
@@ -60,16 +60,16 @@ private func generatePBXProjectTextForDictionary(dict: [String: AnyObject], inou
         text += "\(innerIndent)\(escapePBXProjectString(key)) = "
         
         if value is String {
-            text += escapePBXProjectString(value as String)
+            text += escapePBXProjectString(value as! String)
         } else if value is NSNumber {
-            let num = value as NSNumber
+            let num = value as! NSNumber
             text += escapePBXProjectString(num.description)
         } else if value is [String: AnyObject] {
-            generatePBXProjectTextForDictionary(value as [String: AnyObject], inString: &text, indentLevel: tabCount + 1)
+            generatePBXProjectTextForDictionary(value as! [String: AnyObject], inString: &text, indentLevel: tabCount + 1)
         } else if value is [AnyObject] {
-            generatePBXProjectTextForArray(value as [AnyObject], inString: &text, indentLevel: tabCount + 1)
+            generatePBXProjectTextForArray(value as! [AnyObject], inString: &text, indentLevel: tabCount + 1)
         } else if value is OID {
-            let id = value as OID
+            let id = value as! OID
             
             if let desc = id.targetDescription {
                 text += "\(id.key) /* \(desc) */"
@@ -96,16 +96,16 @@ private func generatePBXProjectTextForArray(array: [AnyObject], inout inString t
         text += innerIndent
         
         if value is String {
-            text += escapePBXProjectString(value as String)
+            text += escapePBXProjectString(value as! String)
         } else if value is NSNumber {
-            let num = value as NSNumber
+            let num = value as! NSNumber
             text += escapePBXProjectString(num.description)
         } else if value is [String: AnyObject] {
-            generatePBXProjectTextForDictionary(value as [String: AnyObject], inString: &text, indentLevel: tabCount + 1)
+            generatePBXProjectTextForDictionary(value as! [String: AnyObject], inString: &text, indentLevel: tabCount + 1)
         } else if value is [AnyObject] {
-            generatePBXProjectTextForArray(value as [AnyObject], inString: &text, indentLevel: tabCount + 1)
+            generatePBXProjectTextForArray(value as! [AnyObject], inString: &text, indentLevel: tabCount + 1)
         } else if value is OID {
-            let id = value as OID
+            let id = value as! OID
             
             if let desc = id.targetDescription {
                 text += "\(id.key) /* \(desc) */"
