@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "XcodeKit"
-  s.version = "3.0.3"
+  s.version = "3.0.4"
   s.summary = "A library to read and write Xcode project files"
   s.homepage = "https://github.com/PodBuilder/XcodeKit"
   s.license = 'MIT'
